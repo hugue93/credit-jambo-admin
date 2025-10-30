@@ -10,6 +10,7 @@ Backend:>
 * copy .env.example .env 
 * npm install 
 * npm run dev
+  
 Frontend Dev (run admin web):> 
 * cd frontend 
 * npm install 
