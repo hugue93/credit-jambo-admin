@@ -91,7 +91,7 @@ Git Bash:
 - Use the same Firebase project for consistent messaging.
 
 ## Database access
-- Firestore access is restricted. If you need database access for testing, send your Google account email to the maintainer so permissions can be granted in Firebase/IAM.
+- Firestore access is restricted. If you need database access for testing, send your Google account email to the to the Developer so permissions can be granted in Firebase/IAM.
 
 ## Troubleshooting
 - No permission prompt: check site settings (lock icon ▶ Site settings ▶ Notifications ▶ Allow).
