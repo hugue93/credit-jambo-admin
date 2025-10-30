@@ -31,7 +31,7 @@ VITE_VAPID_KEY=YOUR_PUBLIC_VAPID_KEY
 
 Start backend:
 
-cd backend && copy .env.example .env && npm install && npm run
+cd backend && copy .env.example .env && npm install && npm run dev
 
 API Docs (if enabled in backend): http://localhost:3000/docs
 
