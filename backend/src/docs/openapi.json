@@ -1,0 +1,203 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "Credit Jambo API", "version": "1.0.0" },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    },
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "required": ["name", "email", "phone", "password", "deviceId"],
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" },
+          "password": { "type": "string", "minLength": 8 },
+          "deviceId": { "type": "string" }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password", "deviceId"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" },
+          "deviceId": { "type": "string" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "token": { "type": "string" },
+          "refreshToken": { "type": "string" }
+        }
+      },
+      "RefreshRequest": {
+        "type": "object",
+        "required": ["refreshToken", "deviceId"],
+        "properties": {
+          "refreshToken": { "type": "string" },
+          "deviceId": { "type": "string" }
+        }
+      },
+      "ForgotPasswordRequest": {
+        "type": "object",
+        "required": ["email"],
+        "properties": {
+          "email": { "type": "string", "format": "email" }
+        }
+      },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "required": ["email", "code", "newPassword"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "code": { "type": "string" },
+          "newPassword": { "type": "string", "minLength": 8 }
+        }
+      },
+      "RegisterDeviceByEmailRequest": {
+        "type": "object",
+        "required": ["email", "deviceId"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "deviceId": { "type": "string" }
+        }
+      },
+      "PushTokenRequest": {
+        "type": "object",
+        "required": ["fcmToken"],
+        "properties": {
+          "fcmToken": { "type": "string" }
+        }
+      },
+      "AmountRequest": {
+        "type": "object",
+        "required": ["amount"],
+        "properties": { "amount": { "type": "number", "minimum": 1 } }
+      },
+      "AdminLoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "summary": "Register user and initial device",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RegisterRequest" } } }
+        },
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/LoginRequest" } } }
+        },
+        "responses": { "200": { "description": "OK", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AuthResponse" } } } }, "400": { "description": "Invalid credentials" } }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Rotate refresh token",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RefreshRequest" } } } },
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": { "summary": "Request reset code", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ForgotPasswordRequest" } } } }, "responses": { "200": { "description": "OK" } } }
+    },
+    "/auth/reset-password": {
+      "post": { "summary": "Reset password", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ResetPasswordRequest" } } } }, "responses": { "200": { "description": "OK" } } }
+    },
+    "/devices/register-by-email": {
+      "post": {
+        "summary": "Register device by email",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RegisterDeviceByEmailRequest" } } } },
+        "responses": { "201": { "description": "Created" }, "400": { "description": "Invalid input" } }
+      }
+    },
+    "/devices/push-token": {
+      "post": {
+        "summary": "Save device push token",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PushTokenRequest" } } } },
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/account/balance": {
+      "get": { "summary": "Get account balance", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } } }
+    },
+    "/transactions": {
+      "get": {
+        "summary": "List transactions",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "limit", "schema": { "type": "integer", "minimum": 1, "maximum": 100 }, "required": false }
+        ],
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Unauthorized" } }
+      }
+    },
+    "/transactions/deposit": {
+      "post": { "summary": "Deposit", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AmountRequest" } } } }, "responses": { "200": { "description": "OK" } } }
+    },
+    "/transactions/withdraw": {
+      "post": { "summary": "Withdraw", "security": [{ "bearerAuth": [] }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AmountRequest" } } } }, "responses": { "200": { "description": "OK" }, "400": { "description": "Insufficient funds" } } }
+    },
+    "/admin/login": {
+      "post": { "summary": "Admin login", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AdminLoginRequest" } } } }, "responses": { "200": { "description": "OK" }, "400": { "description": "Invalid credentials" } } }
+    },
+    "/admin/devices/pending": {
+      "get": { "summary": "List pending devices", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "OK" } } }
+    },
+    "/admin/devices/{id}/verify": {
+      "post": {
+        "summary": "Verify device",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } } ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
+    },
+    "/admin/customers": {
+      "get": { "summary": "List customers", "security": [{ "bearerAuth": [] }], "responses": { "200": { "description": "OK" } } }
+    },
+    "/admin/transactions": {
+      "get": {
+        "summary": "Admin transactions",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "userId", "schema": { "type": "string" } },
+          { "in": "query", "name": "type", "schema": { "type": "string", "enum": ["deposit", "withdraw"] } },
+          { "in": "query", "name": "start", "schema": { "type": "string", "format": "date-time" } },
+          { "in": "query", "name": "end", "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/admin/stats": {
+      "get": {
+        "summary": "Stats",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "in": "query", "name": "start", "schema": { "type": "string", "format": "date-time" } },
+          { "in": "query", "name": "end", "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}
+
+

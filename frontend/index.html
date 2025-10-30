@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credit Jambo Admin</title>
+  </head>
+  <body>
+    <!-- Firebase compat (for web messaging) -->
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging-compat.js"></script>
+    <script>
+      window.__initAdminFcm = async function(vapidKey) {
+        try {
+          // Initialize only once
+          if (firebase.apps.length === 0) {
+            firebase.initializeApp({
+              apiKey: "AIzaSyDucjCR_QAtWQuyHnGlQsGFUpKR6EMobzA",
+              authDomain: "savings-management-system.firebaseapp.com",
+              projectId: "savings-management-system",
+              storageBucket: "savings-management-system.appspot.com",
+              messagingSenderId: "1042133409461",
+              appId: "1:1042133409461:web:35a0174a86b804e53de8fc",
+            });
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+          }
+          const messaging = firebase.messaging();
+          const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+          const perm = await Notification.requestPermission();
+          console.log('[admin-fcm] permission:', perm);
+          if (perm !== 'granted') return null;
+          const token = await messaging.getToken({ vapidKey, serviceWorkerRegistration: reg });
+          console.log('[admin-fcm] token:', token);
+          return token;
+        } catch (e) {
+          console.warn('FCM init error', e);
+          return null;
+        }
+      }
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+  </html>
+
+
+
+
+
+
+
