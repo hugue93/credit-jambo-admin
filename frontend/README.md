@@ -29,39 +29,41 @@ VITE_API_BASE_URL=http://localhost:3000
 VITE_VAPID_KEY=YOUR_PUBLIC_VAPID_KEY
 
 
-Start backend:
-
-cd backend && copy .env.example .env && npm install && npm run dev 
-
-API Docs (if enabled in backend): http://localhost:3000/docs
-
-## Firebase (web push)
-- Get Web Push (VAPID) key from Firebase Console → Project settings → Cloud Messaging → Web configuration.
-- Service worker: `public/firebase-messaging-sw.js` (compatible SDK + config included).
+Run each command one after the other.
+-------------------------------------
+Backend:> 
+* cd backend
+* copy .env.example .env 
+* npm install 
+* npm run dev
 
 ## Run Admin Web
 PowerShell (Windows):
 
-cd frontend
-npm install
-$env:VITE_API_BASE_URL="http://localhost:3000"; $env:VITE_VAPID_KEY=VITE_VAPID_KEY; npm run dev -- --port 5174
+* cd frontend
+* npm install
+* $env:VITE_API_BASE_URL="http://localhost:3000";
+*  $env:VITE_VAPID_KEY=VITE_VAPID_KEY;
+*   npm run dev -- --port 5174
 
 CMD:
 
-cd frontend
-npm install
-set VITE_API_BASE_URL=http://localhost:3000 && set VITE_VAPID_KEY=VITE_VAPID_KEY && npm run dev -- --port 5174
+* cd frontend
+* npm install
+* set VITE_API_BASE_URL=http://localhost:3000
+*  set VITE_VAPID_KEY=VITE_VAPID_KEY
+*  npm run dev -- --port 5174
 
 Git Bash:
 
-cd frontend
-npm install
-VITE_API_BASE_URL=http://localhost:3000 
-VITE_VAPID_KEY=VITE_VAPID_KEY 
-npm run dev -- --port 5174
+* cd frontend
+* npm install
+* VITE_API_BASE_URL=http://localhost:3000 
+* VITE_VAPID_KEY=VITE_VAPID_KEY 
+* npm run dev -- --port 5174
 
 
-Open the printed local URL (e.g., http://localhost:5174). Allow notifications in the browser when prompted.
+* Open the printed local URL (e.g., http://localhost:5174). Allow notifications in the browser when prompted.
 
 ## Admin Credentials (local dev)
 - email: ADMIN_SEED_EMAIL
