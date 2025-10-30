@@ -43,7 +43,7 @@ PowerShell (Windows):
 * cd frontend
 * npm install
 * $env:VITE_API_BASE_URL="http://localhost:3000";
-*  $env:VITE_VAPID_KEY=VITE_VAPID_KEY;
+*  $env:VITE_VAPID_KEY=YOUR_VITE_VAPID_KEY;
 *   npm run dev -- --port 5174
 
 CMD:
@@ -51,7 +51,7 @@ CMD:
 * cd frontend
 * npm install
 * set VITE_API_BASE_URL=http://localhost:3000
-*  set VITE_VAPID_KEY=VITE_VAPID_KEY
+*  set VITE_VAPID_KEY=YOUR_VITE_VAPID_KEY
 *  npm run dev -- --port 5174
 
 Git Bash:
@@ -59,7 +59,7 @@ Git Bash:
 * cd frontend
 * npm install
 * VITE_API_BASE_URL=http://localhost:3000 
-* VITE_VAPID_KEY=VITE_VAPID_KEY 
+* VITE_VAPID_KEY=YOUR_VITE_VAPID_KEY 
 * npm run dev -- --port 5174
 
 
