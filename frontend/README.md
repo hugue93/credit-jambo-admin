@@ -8,7 +8,7 @@
 * Backend API running (see `/backend`)
 
 ## Backend environment (.env)
-* Create `backend/.env`:
+* Create `backend/.env`
 
 * PORT=3000
 * CORS_ORIGIN=http://localhost:5173,http://localhost:5174
